@@ -10,6 +10,7 @@ import User from "../models/user";
 
 const Home: React.FC = () => {
   const [users, setUsers] = useState<string>();
+  const [repos, setRepos] = useState<any[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasError, setHasError] = useState<boolean>(false);
   const [userList, setUserList] = useState<User>();
@@ -27,11 +28,28 @@ const Home: React.FC = () => {
     } finally{
       setIsLoading(false);
     }
-  }, [users])
+  }, [users]);
+
+  const loadRepos = useCallback( async () => {
+    try{   
+      setIsLoading(true);
+      if(users){
+        const reposList = await UserService.listRepos(users);
+        
+        setRepos(reposList); 
+      }
+    }catch(error){
+      console.error(error);
+      setHasError(true);
+    } finally{
+      setIsLoading(false);
+    }
+  }, [users]);
 
   useEffect(()=>{
     loadUsers();
-  },[loadUsers])
+    loadRepos();
+  },[loadUsers, loadRepos]);
 
   if(isLoading){  
     return <p>Loading...</p>
@@ -41,8 +59,8 @@ const Home: React.FC = () => {
     <body className={classes.form}>
       <UserForm setUsers={setUsers}/>
       <main>
-        {!isLoading && !hasError && userList &&(
-          <UserCard avatar_url={userList.avatar_url} name={userList.name} bio={userList.bio} followers={userList.followers} following={userList.following} public_repos={userList.public_repos}/>
+        {!isLoading && !hasError && userList && repos &&(
+          <UserCard avatar_url={userList.avatar_url} name={userList.name} bio={userList.bio} followers={userList.followers} following={userList.following} public_repos={userList.public_repos} repos={repos}/>
         )}
       </main>
     </body>

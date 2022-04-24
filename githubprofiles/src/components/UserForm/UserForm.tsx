@@ -16,7 +16,6 @@ const UserForm: React.FC<{setUsers: (user: string) => void}> = (props) => {
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
       <input type="text" id="search" placeholder="Search a Github User" className={classes.input} ref={usernameInputRef}/>
-      <button>Search</button>
     </form>
   )
 }
