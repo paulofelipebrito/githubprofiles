@@ -152,7 +152,7 @@ This project was developed with the following technologies:
   
 - ✔️ React Hooks
 
-- ✔️ Css Modules
+- ✔️ CSS Modules
 
 <!-- ACKNOWLEDGMENTS
 ## Acknowledgments
